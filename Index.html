@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ragani – Lyrics, raags and melodies</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* ---------- Design tokens (light) ---------- */
+:root{
+  --bg:#FAFAFA; --lav:#F3E8FF; --peach:#FFEDD5; --ink:#1E293B; --muted:#5B6678;
+  --surface:#FFFFFF; --line:rgba(30,41,59,.12); --glass:rgba(250,250,250,.72);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Figtree",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --r:22px; --pad:clamp(18px,4vw,40px); --hh:60px;
+  --ac:#4F46E5; --ac2:#FEF9C3; --ac3:#FFEDD5; --on-ac:#fff; /* default accent = Western */
+  color-scheme:light;
+}
+/* ---------- Dark tokens ---------- */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14121A; --lav:#241B38; --peach:#2E2018; --ink:#F1ECF7; --muted:#A9A3B8;
+    --surface:#1D1A26; --line:rgba(241,236,247,.14); --glass:rgba(20,18,26,.68); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14121A; --lav:#241B38; --peach:#2E2018; --ink:#F1ECF7; --muted:#A9A3B8;
+  --surface:#1D1A26; --line:rgba(241,236,247,.14); --glass:rgba(20,18,26,.68); color-scheme:dark;
+}
+/* Genre accent scopes: each section re-points the same variables */
+.classical{--ac:#5C3A21; --ac2:#FDF8F5; --ac3:#D6C7B2; --on-ac:#FDF8F5}
+.spiritual{--ac:#D97706; --ac2:#FEF3C7; --ac3:#7C2D12; --on-ac:#fff}
+.western{--ac:#4F46E5; --ac2:#FEF9C3; --ac3:#FFEDD5; --on-ac:#fff}
+:root[data-theme="dark"] .classical{--ac:#D6C7B2; --on-ac:#2A1A0E}
+:root[data-theme="dark"] .spiritual{--ac:#F59E0B; --on-ac:#2A1500}
+:root[data-theme="dark"] .western{--ac:#8B93FF; --on-ac:#12113A}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .classical{--ac:#D6C7B2; --on-ac:#2A1A0E}
+  :root:not([data-theme="light"]) .spiritual{--ac:#F59E0B; --on-ac:#2A1500}
+  :root:not([data-theme="light"]) .western{--ac:#8B93FF; --on-ac:#12113A}
+}
+
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + env(safe-area-inset-top,0px) + 12px)}
+body{font:400 1rem/1.6 var(--sans);color:var(--ink);background:var(--bg);
+  padding-top:calc(var(--hh) + env(safe-area-inset-top,0px));-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* ---------- Sticky frosted header: content glides beneath it ---------- */
+.bar{position:fixed;inset:0 0 auto 0;z-index:50;padding-top:env(safe-area-inset-top,0px);
+  background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid var(--line)}
+.bar-in{max-width:1180px;margin:0 auto;height:var(--hh);padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between}
+.word{font:500 1.7rem/1 var(--serif);letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.tools{display:flex;gap:8px}
+.ibtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;transition:background .2s}
+.ibtn:hover{background:var(--lav)}
+.ibtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+main{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+
+/* ---------- Hero ---------- */
+.hero{margin:20px 0 0;padding:clamp(36px,8vw,88px) clamp(20px,5vw,64px);border-radius:32px;
+  background:linear-gradient(160deg,var(--lav) 0%,var(--peach) 100%)}
+.hero h1{font:400 clamp(2.3rem,6.4vw,4.6rem)/1.04 var(--serif);letter-spacing:-.02em;max-width:15ch}
+.hero p{margin-top:18px;max-width:50ch;color:var(--muted);font-size:1.08rem}
+.search{position:relative;margin-top:32px;max-width:620px}
+.search input{width:100%;height:56px;border-radius:28px;border:1px solid var(--line);background:var(--surface);padding:0 22px 0 52px;font-size:1rem}
+.search svg{position:absolute;left:19px;top:18px;width:20px;height:20px;stroke:var(--muted);fill:none;stroke-width:1.8;stroke-linecap:round}
+.results{position:absolute;left:0;right:0;top:64px;z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  max-height:340px;overflow:auto;box-shadow:0 18px 40px -20px rgba(30,41,59,.35);padding:6px}
+.results[hidden]{display:none}
+.results button{display:flex;width:100%;justify-content:space-between;gap:12px;text-align:left;background:none;border:0;padding:11px 14px;border-radius:14px}
+.results button:hover,.results button:focus-visible{background:var(--lav)}
+.results small{color:var(--muted)}
+.results .none{padding:14px;color:var(--muted)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:99px;padding:6px 14px;font-size:.9rem;transition:background .2s}
+.chip:hover{background:var(--surface)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- Genre tabs ---------- */
+.genres{margin-top:72px}
+.genres>h2,.more>h2{font:400 clamp(1.7rem,4vw,2.4rem)/1.15 var(--serif);letter-spacing:-.01em}
+.sub{color:var(--muted);margin-top:6px;max-width:58ch}
+.tabs{display:flex;gap:6px;margin:24px 0 0;padding:5px;border-radius:99px;background:var(--lav);width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:transparent;border-radius:99px;padding:10px 20px;white-space:nowrap;font-weight:500;color:var(--muted);transition:background .25s,color .25s}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(30,41,59,.15)}
+.panel{margin-top:20px;padding:clamp(20px,4vw,40px);border-radius:28px;touch-action:pan-y;
+  background:color-mix(in srgb,var(--ac2) 55%,var(--bg));border:1px solid color-mix(in srgb,var(--ac3) 45%,transparent)}
+.panel[hidden]{display:none}
+.panel h3{font:400 clamp(1.4rem,3vw,1.9rem)/1.2 var(--serif);color:var(--ac)}
+:root[data-theme="dark"] .panel{background:color-mix(in srgb,var(--ac) 10%,var(--bg))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .panel{background:color-mix(in srgb,var(--ac) 10%,var(--bg))}}
+.spiritual h3,.spiritual .tag{color:var(--ac3)}
+:root[data-theme="dark"] .spiritual h3{color:var(--ac)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .spiritual h3{color:var(--ac)}}
+
+/* Card rows: swipeable snap-scroll on phones, grid on wide screens */
+.row{display:grid;grid-auto-flow:column;grid-auto-columns:min(82%,330px);gap:14px;margin:22px calc(-1*var(--pad)) 0;padding:2px var(--pad) 14px;
+  overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.row>*{scroll-snap-align:start}
+@media (min-width:860px){.row{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);grid-auto-columns:auto;margin:22px 0 0;padding:0;overflow:visible}}
+@media (min-width:1100px){.row.three{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:100px}
+.card.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--ac)}100%{box-shadow:0 0 0 3px transparent}}
+.card h4{font:500 1.35rem/1.2 var(--serif)}
+.meta{color:var(--muted);font-size:.9rem}
+.tag{align-self:flex-start;font-size:.8rem;font-weight:600;color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);border-radius:99px;padding:3px 11px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.93rem}
+dt{color:var(--muted)}
+dd{font-weight:500}
+.swar{font-family:var(--serif);font-size:1.05rem;letter-spacing:.04em}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--ac);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details ol{margin:10px 0 0 1.1rem;font-size:.93rem;display:grid;gap:6px;color:var(--muted)}
+
+.sub-h{font:500 1.15rem var(--serif);margin-top:30px}
+.swars{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.swars span{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 14px;font-size:.88rem;color:var(--muted)}
+.swars b{display:block;font:500 1.1rem var(--serif);color:var(--ink)}
+.thaats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.thaats div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:.88rem;color:var(--muted)}
+.thaats b{display:block;font:500 1.05rem var(--serif);color:var(--ink)}
+.note{margin-top:16px;font-size:.9rem;color:var(--muted)}
+
+/* ---------- More categories ---------- */
+.more{margin-top:80px}
+.filters{display:flex;gap:8px;overflow-x:auto;margin:20px calc(-1*var(--pad)) 0;padding:2px var(--pad);scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters .chip{white-space:nowrap}
+.list{margin-top:18px;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;scroll-margin-top:100px}
+.item h4{font:500 1.15rem var(--serif)}
+.item p{font-size:.9rem;color:var(--muted);margin-top:2px}
+.item em{font-style:normal;font-size:.8rem;font-weight:600;color:#4F46E5}
+
+footer{margin:90px 0 0;padding:34px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer .word{font-size:1.3rem}
+</style>
+</head>
+<body>
+
+<!-- Sticky glass header -->
+<header class="bar">
+  <div class="bar-in">
+    <a class="word" href="#top" aria-label="Ragani home">Ragani</a>
+    <div class="tools">
+      <button class="ibtn" id="openSearch" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></button>
+      <button class="ibtn" id="theme" aria-label="Switch light or dark mode"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero with live search -->
+  <section class="hero">
+    <h1>A quiet place for lyrics, raags and melodies.</h1>
+    <p>Read the words, learn how a raag is sung, and find the chords behind a song you love. Everything in one calm library.</p>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      <input id="q" type="search" placeholder="Search a raag, song, thaat or note" autocomplete="off" aria-label="Search Ragani" aria-controls="res">
+      <div class="results" id="res" hidden></div>
+    </div>
+    <div class="quick" aria-label="Popular searches">
+      <button class="chip" data-q="Yaman">Yaman</button>
+      <button class="chip" data-q="Hanuman Chalisa">Hanuman Chalisa</button>
+      <button class="chip" data-q="Let It Be">Let It Be</button>
+      <button class="chip" data-q="Ghazal">Ghazal</button>
+    </div>
+  </section>
+
+  <!-- Primary genres -->
+  <section class="genres" id="genres">
+    <h2>Explore by tradition</h2>
+    <p class="sub">Three doorways into the library. Swipe the cards on your phone, or swipe a section sideways to move to the next one.</p>
+    <div class="tabs" role="tablist" aria-label="Music traditions">
+      <button class="tab" role="tab" id="t-classical" aria-controls="p-classical" aria-selected="true">Indian Classical</button>
+      <button class="tab" role="tab" id="t-spiritual" aria-controls="p-spiritual" aria-selected="false" tabindex="-1">Spiritual &amp; Devotional</button>
+      <button class="tab" role="tab" id="t-western" aria-controls="p-western" aria-selected="false" tabindex="-1">Western</button>
+    </div>
+
+    <!-- Indian Classical -->
+    <div class="panel classical" role="tabpanel" id="p-classical" aria-labelledby="t-classical">
+      <h3>Raags, swars and thaats</h3>
+      <p class="sub">Each raag below lists its ascent and descent, its two key notes and the hour it belongs to, followed by a short practice route.</p>
+      <div class="row" id="raags"></div>
+      <h4 class="sub-h">The seven swars</h4>
+      <div class="swars">
+        <span><b>Sa</b>Shadja</span><span><b>Re</b>Rishabh</span><span><b>Ga</b>Gandhar</span><span><b>Ma</b>Madhyam</span>
+        <span><b>Pa</b>Pancham</span><span><b>Dha</b>Dhaivat</span><span><b>Ni</b>Nishad</span>
+      </div>
+      <p class="note">Sa and Pa are fixed. Re, Ga, Dha and Ni can be komal (flat), and Ma can be tivra (sharp). In the notation here, a lowercase letter is komal and M&#8242; is tivra Ma.</p>
+      <h4 class="sub-h">The ten thaats</h4>
+      <div class="thaats">
+        <div><b>Bilawal</b>All shuddha swars</div><div><b>Khamaj</b>Komal Ni</div><div><b>Kafi</b>Komal Ga, Ni</div>
+        <div><b>Asavari</b>Komal Ga, Dha, Ni</div><div><b>Bhairavi</b>Komal Re, Ga, Dha, Ni</div><div><b>Bhairav</b>Komal Re, Dha</div>
+        <div><b>Kalyan</b>Tivra Ma</div><div><b>Marwa</b>Komal Re, tivra Ma</div><div><b>Poorvi</b>Komal Re, Dha, tivra Ma</div><div><b>Todi</b>Komal Re, Ga, Dha, tivra Ma</div>
+      </div>
+    </div>
+
+    <!-- Spiritual & Devotional -->
+    <div class="panel spiritual" role="tabpanel" id="p-spiritual" aria-labelledby="t-spiritual" hidden>
+      <h3>Bhajans, chants and aartis</h3>
+      <p class="sub">Sacred texts to sing, with the story behind each one and when it is traditionally sung.</p>
+      <div class="row three" id="spirit"></div>
+    </div>
+
+    <!-- Western -->
+    <div class="panel western" role="tabpanel" id="p-western" aria-labelledby="t-western" hidden>
+      <h3>Songs, structure and chords</h3>
+      <p class="sub">Timeless songs broken down into key, form and the chords you need to play them.</p>
+      <div class="row three" id="west"></div>
+    </div>
+  </section>
+
+  <!-- Additional categories -->
+  <section class="more" id="more">
+    <h2>More to explore</h2>
+    <p class="sub">Filter the shelf by style.</p>
+    <div class="filters" id="filters" role="group" aria-label="Filter categories"></div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <footer>
+    <a class="word" href="#top">Ragani</a>
+    <span>Lyrics, raags and melodies for every listener.</span>
+  </footer>
+</main>
+
+<script>
+/* ===== Content data ===== */
+const RAAGS = [
+  {id:"yaman",name:"Yaman",thaat:"Kalyan",time:"First prahar of night, about 6 to 9 pm",
+   aroha:"N R G M′ P D N S′",avaroha:"S′ N D P M′ G R S",vadi:"Ga",samvadi:"Ni",
+   mood:"Serene and devotional. Often the first raag a student learns.",
+   steps:["Sing the notes of the aroha slowly on one breath each, holding Sa steady.","Begin the phrase at the lower Ni (N R G) to set the raag.","Use tivra Ma only. Rest on Ga and Ni, the main notes.","Practise the pakad phrase N R G, R G, M′ P, G M′ G R S at a slow tempo.","Add a slow alap for five minutes before any fast taan."]},
+  {id:"bhairav",name:"Bhairav",thaat:"Bhairav",time:"Dawn, the last prahar of night",
+   aroha:"S r G M P d N S′",avaroha:"S′ N d P M G r S",vadi:"Dha (komal)",samvadi:"Re (komal)",
+   mood:"Grave and meditative, a raag for the first light of day.",
+   steps:["Sing Sa, then glide gently down onto komal Re and back.","Slow, wide oscillation on komal Re and komal Dha is the signature of this raag.","Keep Ga and Ni shuddha. Never rush these notes.","Rest on Dha and Re, the main notes, at the end of phrases.","Practise early in the morning with a drone for ten minutes."]},
+  {id:"bhairavi",name:"Bhairavi",thaat:"Bhairavi",time:"Morning, often sung to close a concert",
+   aroha:"S r g M P d n S′",avaroha:"S′ n d P M g r S",vadi:"Ma",samvadi:"Sa",
+   mood:"Tender and yearning. All four flexible notes are komal.",
+   steps:["Sing the full scale slowly and check each komal note against the drone.","Linger on komal Re and komal Dha with a gentle touch.","Build short phrases around Ma and Ga before extending upward.","Sing a simple bandish or bhajan in this raag to feel its mood.","Close each phrase by returning to Sa."]},
+  {id:"darbari",name:"Darbari Kanada",thaat:"Asavari",time:"Late night, near midnight",
+   aroha:"S R g M P d n S′",avaroha:"S′ d n P g M R S",vadi:"Re",samvadi:"Pa",
+   mood:"Deep, majestic and slow, with a famously wide oscillation.",
+   steps:["Sing very slowly in the lower octave, with a steady, relaxed voice.","Apply a slow, broad andolan to komal Ga and komal Dha.","Approach komal Ga in a long slide from Re, never directly.","Keep the tempo low and let each note settle before moving on.","Practise at night and listen to a recording to hear the oscillation."]}
+];
+const SPIRIT = [
+  {id:"hanuman",name:"Hanuman Chalisa",by:"Attributed to Tulsidas",desc:"A forty-verse hymn of praise to Hanuman, sung across India on Tuesdays and Saturdays.",when:"Morning or evening prayer",lang:"Awadhi"},
+  {id:"jagdish",name:"Om Jai Jagdish Hare",by:"Popular aarti",desc:"The best-known household aarti, sung while a lamp is waved before the deity.",when:"Evening aarti",lang:"Hindi"},
+  {id:"gayatri",name:"Gayatri Mantra",by:"Rigveda",desc:"A Vedic chant to the sun's light of wisdom, repeated in sets of 108.",when:"Sunrise",lang:"Sanskrit"},
+  {id:"vaishnav",name:"Vaishnav Jan To",by:"Narsinh Mehta",desc:"A Gujarati bhajan describing the qualities of a true devotee. Dear to Mahatma Gandhi.",when:"Any time",lang:"Gujarati"},
+  {id:"raghupati",name:"Raghupati Raghav Raja Ram",by:"Traditional",desc:"A call-and-response bhajan that is easy to learn and ideal for group singing.",when:"Group gatherings",lang:"Hindi"},
+  {id:"shiv",name:"Shiv Tandav Stotram",by:"Attributed to Ravana",desc:"A powerful Sanskrit hymn praising Shiva, known for its driving rhythm.",when:"Mondays and Mahashivratri",lang:"Sanskrit"}
+];
+const WEST = [
+  {id:"letitbe",name:"Let It Be",by:"The Beatles",key:"C major",form:"Verse, chorus, verse, chorus, solo, chorus",chords:"C  G  Am  F",scale:"C major pentatonic suits the melody"},
+  {id:"hallelujah",name:"Hallelujah",by:"Leonard Cohen",key:"C major",form:"Verses with a repeating refrain",chords:"C  Am  F  G  E7",scale:"C major with a touch of E major in the bridge"},
+  {id:"imagine",name:"Imagine",by:"John Lennon",key:"C major",form:"Verse, pre-chorus, chorus",chords:"C  Cmaj7  F  Am  Dm  G",scale:"C major scale"},
+  {id:"stand",name:"Stand By Me",by:"Ben E. King",key:"A major",form:"Verse and chorus over one loop",chords:"A  F#m  D  E",scale:"A major pentatonic"},
+  {id:"tennessee",name:"Country Roads",by:"John Denver",key:"A major",form:"Verse, chorus, bridge",chords:"A  F#m  E  D",scale:"A major scale"},
+  {id:"wonderwall",name:"Wonderwall",by:"Oasis",key:"F# minor, capo 2",form:"Verse, pre-chorus, chorus",chords:"Em7  G  Dsus4  A7sus4",scale:"E minor pentatonic with capo"}
+];
+const MORE = [
+  {cat:"Sufi & Ghazal",name:"Kun Faya Kun",desc:"A qawwali-style Sufi devotional in Hindustani with a rising, trance-like refrain."},
+  {cat:"Sufi & Ghazal",name:"Dama Dam Mast Qalandar",desc:"A Sufi invocation of Lal Shahbaz Qalandar, sung across South Asia."},
+  {cat:"Sufi & Ghazal",name:"Ranjish Hi Sahi",desc:"A classic ghazal made famous by Mehdi Hassan, with notes on its raag-based setting."},
+  {cat:"Sufi & Ghazal",name:"Chupke Chupke Raat Din",desc:"A gentle ghazal of memory by Hasrat Mohani, sung by Ghulam Ali."},
+  {cat:"Indian Folk & Regional",name:"Kesariya Balam",desc:"A Rajasthani welcome song that calls a traveller ho
